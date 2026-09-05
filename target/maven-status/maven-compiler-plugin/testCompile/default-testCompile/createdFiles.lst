@@ -1,0 +1,6 @@
+com/todolist/TaskDeleteApiTest.class
+com/todolist/TaskCreateApiTest.class
+com/todolist/repository/TaskRepositoryTest.class
+com/todolist/TaskListApiTest.class
+com/todolist/TaskUpdateApiTest.class
+com/todolist/TaskGetApiTest.class

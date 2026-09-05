@@ -1,0 +1,11 @@
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/TodoListApplication.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/config/CorsConfig.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/config/GlobalErrorHandler.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/controller/TaskController.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/model/Task.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/model/TaskStatus.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/model/dto/CreateTaskRequest.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/model/dto/ErrorResponse.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/model/dto/UpdateTaskRequest.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/repository/TaskRepository.java
+/home/leo/todolist-lab02/todolist-spring/src/main/java/com/todolist/service/TaskService.java
