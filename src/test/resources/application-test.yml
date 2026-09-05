@@ -1,0 +1,8 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/todolist_test
+    username: todolist
+    password: todolist
+  sql:
+    init:
+      mode: always

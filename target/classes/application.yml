@@ -4,3 +4,14 @@ server:
 spring:
   application:
     name: todolist-spring
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://localhost:5432/todolist}
+    username: ${SPRING_R2DBC_USERNAME:todolist}
+    password: ${SPRING_R2DBC_PASSWORD:todolist}
+    pool:
+      enabled: true
+      initial-size: 2
+      max-size: 10
+  sql:
+    init:
+      mode: always

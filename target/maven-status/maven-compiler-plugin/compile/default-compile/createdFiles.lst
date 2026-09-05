@@ -1,5 +1,6 @@
 com/todolist/repository/TaskRepository.class
 com/todolist/config/GlobalErrorHandler.class
+com/todolist/model/dto/UpdateTaskRequest.class
 com/todolist/model/dto/ErrorResponse.class
 com/todolist/model/TaskStatus.class
 com/todolist/service/TaskService.class
@@ -8,4 +9,3 @@ com/todolist/config/CorsConfig.class
 com/todolist/TodoListApplication.class
 com/todolist/model/dto/CreateTaskRequest.class
 com/todolist/model/Task.class
-com/todolist/model/dto/UpdateTaskRequest.class

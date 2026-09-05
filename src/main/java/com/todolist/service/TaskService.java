@@ -23,12 +23,12 @@ public class TaskService {
 
     public Mono<Task> createTask(String title) {
         String normalized = normalizeTitle(title);
-        Task task = new Task(repository.nextId(), normalized, TaskStatus.PENDING);
+        Task task = new Task(null, normalized, TaskStatus.PENDING);
         return repository.save(task);
     }
 
     public Flux<Task> findAllTasks() {
-        return repository.findAll();
+        return repository.findAllByOrderByIdAsc();
     }
 
     public Mono<Task> findById(long id) {
@@ -60,12 +60,12 @@ public class TaskService {
         if (id <= 0) {
             return Mono.error(new IllegalArgumentException("id must be a positive integer"));
         }
-        return repository.deleteById(id)
-                .flatMap(removed -> {
-                    if (Boolean.FALSE.equals(removed)) {
+        return repository.existsById(id)
+                .flatMap(exists -> {
+                    if (Boolean.FALSE.equals(exists)) {
                         return Mono.error(notFound(id));
                     }
-                    return Mono.empty();
+                    return repository.deleteById(id);
                 });
     }
 

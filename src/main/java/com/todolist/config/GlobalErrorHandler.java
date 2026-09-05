@@ -40,6 +40,16 @@ public class GlobalErrorHandler {
         return error(HttpStatus.BAD_REQUEST.value(), "Malformed request body");
     }
 
+    @ExceptionHandler(org.springframework.dao.DataAccessException.class)
+    public ResponseEntity<ErrorResponse> handleDataAccess(org.springframework.dao.DataAccessException ex) {
+        return error(HttpStatus.SERVICE_UNAVAILABLE.value(), "Database unavailable");
+    }
+
+    @ExceptionHandler(io.r2dbc.spi.R2dbcException.class)
+    public ResponseEntity<ErrorResponse> handleR2dbc(io.r2dbc.spi.R2dbcException ex) {
+        return error(HttpStatus.SERVICE_UNAVAILABLE.value(), "Database unavailable");
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex) {
         return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");

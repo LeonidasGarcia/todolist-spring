@@ -1,4 +1,8 @@
 package com.todolist.model;
 
-public record Task(long id, String title, TaskStatus status) {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Table("tasks")
+public record Task(@Id Long id, String title, TaskStatus status) {
 }

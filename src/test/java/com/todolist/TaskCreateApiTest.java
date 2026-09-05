@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.test.StepVerifier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
+@ActiveProfiles("test")
 class TaskCreateApiTest {
 
     @Autowired
@@ -22,7 +24,7 @@ class TaskCreateApiTest {
 
     @BeforeEach
     void clearStore() {
-        StepVerifier.create(repository.clear()).verifyComplete();
+        StepVerifier.create(repository.deleteAll()).verifyComplete();
     }
 
     @Test
@@ -34,7 +36,8 @@ class TaskCreateApiTest {
                 .expectStatus().isCreated()
                 .expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(1)
+                .jsonPath("$.id").value(value ->
+                        org.assertj.core.api.Assertions.assertThat(Long.parseLong(value.toString())).isPositive())
                 .jsonPath("$.title").isEqualTo("Buy groceries")
                 .jsonPath("$.status").isEqualTo("PENDING");
     }

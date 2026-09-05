@@ -1,28 +1,38 @@
 # todolist-spring
 
 Reactive REST API for the TodoList project. Built with Spring Boot + WebFlux
-(Java 21, Maven) and exclusive in-memory storage. Runs on `localhost:8080`.
+(Java 21, Maven) with **durable PostgreSQL storage accessed reactively (R2DBC)**.
+Runs on `localhost:8080`.
 
 ## Prerequisites
 
 - **JDK 21** (LTS) — required by Spring Boot 3.x and Java records
 - **Maven 3.6.3+** (or use the Maven Wrapper `./mvnw`)
+- **PostgreSQL** — persistence is database-backed. Easiest via Docker Compose
+  (see below), or point `SPRING_R2DBC_URL`/`SPRING_R2DBC_USERNAME`/
+  `SPRING_R2DBC_PASSWORD` at an existing instance.
 
 ## Setup and Run
 
 From this directory (`todolist-spring/`):
 
 ```bash
-./mvnw spring-boot:run
+docker compose up --build
 ```
 
-or with a system Maven installation:
+or, against a locally running PostgreSQL on `localhost:5432`:
 
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run     # or: mvn spring-boot:run
 ```
 
-The API is available at **http://localhost:8080** once started.
+The schema (`tasks` table) is created automatically at startup. The API is
+available at **http://localhost:8080** once started. Data is **persisted** in
+PostgreSQL and survives application restarts.
+
+> Note: the `db` container also creates the `todolist_test` database used by
+> the automated tests (see `db-init/init.sql`). Run tests with
+> `docker compose up -d db` first, then `./mvnw test`.
 
 ## Quick Validation
 

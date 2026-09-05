@@ -2,5 +2,6 @@
 /home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/TaskDeleteApiTest.java
 /home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/TaskGetApiTest.java
 /home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/TaskListApiTest.java
+/home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/TaskPersistenceApiTest.java
 /home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/TaskUpdateApiTest.java
 /home/leo/todolist-lab02/todolist-spring/src/test/java/com/todolist/repository/TaskRepositoryTest.java

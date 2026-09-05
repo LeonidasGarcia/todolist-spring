@@ -1,7 +1,36 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: todolist-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: todolist
+      POSTGRES_USER: todolist
+      POSTGRES_PASSWORD: todolist
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U todolist -d todolist"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - todolist-db-data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+
   backend:
     build: .
     container_name: todolist-spring
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://db:5432/todolist
+      SPRING_R2DBC_USERNAME: todolist
+      SPRING_R2DBC_PASSWORD: todolist
     ports:
       - "8080:8080"
+
+volumes:
+  todolist-db-data:

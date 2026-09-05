@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.test.StepVerifier;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
+@ActiveProfiles("test")
 class TaskListApiTest {
 
     @Autowired
@@ -22,7 +26,7 @@ class TaskListApiTest {
 
     @BeforeEach
     void clearStore() {
-        StepVerifier.create(repository.clear()).verifyComplete();
+        StepVerifier.create(repository.deleteAll()).verifyComplete();
     }
 
     @Test
@@ -37,27 +41,30 @@ class TaskListApiTest {
 
     @Test
     void listContainsCreatedTasksInAscendingIdOrder() {
-        webTestClient.post().uri("/api/todos")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"title\":\"First\"}")
-                .exchange()
-                .expectStatus().isCreated();
-
-        webTestClient.post().uri("/api/todos")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue("{\"title\":\"Second\"}")
-                .exchange()
-                .expectStatus().isCreated();
+        long first = createTask("First");
+        long second = createTask("Second");
 
         webTestClient.get().uri("/api/todos")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$[0].id").isEqualTo(1)
+                .jsonPath("$[0].id").isEqualTo(first)
                 .jsonPath("$[0].title").isEqualTo("First")
                 .jsonPath("$[0].status").isEqualTo("PENDING")
-                .jsonPath("$[1].id").isEqualTo(2)
+                .jsonPath("$[1].id").isEqualTo(second)
                 .jsonPath("$[1].title").isEqualTo("Second")
                 .jsonPath("$[1].status").isEqualTo("PENDING");
+    }
+
+    private long createTask(String title) {
+        AtomicLong id = new AtomicLong();
+        webTestClient.post().uri("/api/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"title\":\"" + title + "\"}")
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody()
+                .jsonPath("$.id").value(value -> id.set(Long.parseLong(value.toString())));
+        return id.get();
     }
 }
